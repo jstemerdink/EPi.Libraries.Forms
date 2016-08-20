@@ -217,10 +217,9 @@
     <None Include="modules\_protected\EPiServer.Forms\Forms.config" />
     <None Include="modules\_protected\Shell\Shell.zip" />
     <None Include="packages.config" />
-    <None Include="Views\Shared\FormsContentArea.cshtml" />
+    <Content Include="Views\Shared\FormsContentArea.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="readme.txt" />
     <Content Include="Views\Blocks\FormBlockControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
