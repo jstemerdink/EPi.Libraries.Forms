@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPi.Libraries.Forms", "EPi.Libraries.Forms\EPi.Libraries.Forms.csproj", "{F627D726-0508-43B2-A437-4FB4FC8F9DF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{DC3E684B-C297-4553-A159-833528FA0B50}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		EPi.Libraries.Forms\EPi.Libraries.Forms.nuspec = EPi.Libraries.Forms\EPi.Libraries.Forms.nuspec
+		EPi.Libraries.Forms\listfile.txt = EPi.Libraries.Forms\listfile.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F627D726-0508-43B2-A437-4FB4FC8F9DF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F627D726-0508-43B2-A437-4FB4FC8F9DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F627D726-0508-43B2-A437-4FB4FC8F9DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F627D726-0508-43B2-A437-4FB4FC8F9DF3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
