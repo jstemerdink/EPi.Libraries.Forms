@@ -220,7 +220,6 @@
     <None Include="Views\Shared\FormsContentArea.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="listfile.txt" />
     <Content Include="readme.txt" />
     <Content Include="Views\Blocks\FormBlockControl.ascx">
       <SubType>ASPXCodeBehind</SubType>
