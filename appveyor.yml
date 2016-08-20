@@ -16,7 +16,7 @@ build:
 after_build:
 - cmd: nuget pack EPi.Libraries.Forms\EPi.Libraries.Forms.csproj -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.nupkg"
-- 7z a -tzip EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Forms\listfile.txt
+- 7za a -tzip EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip %APPVEYOR_BUILD_FOLDER%\EPi.Libraries.Forms\@listfile.txt
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip"
 before_package:
 - ps: >-
