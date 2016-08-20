@@ -12,6 +12,8 @@ By Jeroen Stemerdink
 ## About
 Trick your EPiServer WebForms project into working with the new Forms Add-on
 
+See my [blog post](https://jstemerdink.wordpress.com/2016/08/18/forms-and-webforms-pt2/) for more information.
+
 
 > *Powered by ReSharper*
 
