@@ -1,3 +1,0 @@
-bin\EPi.Libraries.Forms.dll
-Views\Blocks\FormBlockControl.ascx
-Views\Shared\FormsContentArea.cshtml

@@ -50,12 +50,10 @@ namespace EPi.Libraries.Forms.Views.Blocks
         protected ControllerContext FakeContext { get; private set; }
 
         /// <summary>
-        /// Handles the Load event of the Page control.
+        /// Raises the <see cref="E:System.Web.UI.Control.Load" /> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        /// <exception cref="NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
-        protected void Page_Load(object sender, EventArgs e)
+        /// <param name="e">The <see cref="T:System.EventArgs" /> object that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
             this.FakeContext = MvcUtility.GetFormControllerContext();
 
@@ -81,17 +79,18 @@ namespace EPi.Libraries.Forms.Views.Blocks
             contentArea.Items.Add(new ContentAreaItem { ContentLink = this.CurrentBlock.Content.ContentLink });
 
             this.FakeArea = contentArea;
-            this.DataBind();
+
+            base.OnLoad(e);
         }
 
         /// <summary>
-        /// Handles the PreRender event of the Page control.
+        /// Raises the <see cref="E:System.Web.UI.Control.PreRender" /> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        protected void Page_PreRender(object sender, EventArgs e)
+        /// <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
+        protected override void OnPreRender(EventArgs e)
         {
             FormHelpers.SetVisitorIdentifierIfNeeded(this.FakeContext.HttpContext);
+            base.OnPreRender(e);
         }
     }
 }

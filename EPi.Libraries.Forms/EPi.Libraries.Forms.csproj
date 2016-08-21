@@ -200,12 +200,12 @@
     <Compile Include="GhostForm.cs" />
     <Compile Include="MvcUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Blocks\FormBlockControl.ascx.cs">
-      <DependentUpon>FormBlockControl.ascx</DependentUpon>
+    <Compile Include="Views\Blocks\FormContainerBlockControl.ascx.cs">
+      <DependentUpon>FormContainerBlockControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Blocks\FormBlockControl.ascx.designer.cs">
-      <DependentUpon>FormBlockControl.ascx.cs</DependentUpon>
+    <Compile Include="Views\Blocks\FormContainerBlockControl.ascx.designer.cs">
+      <DependentUpon>FormContainerBlockControl.ascx.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -217,12 +217,10 @@
     <None Include="modules\_protected\EPiServer.Forms\Forms.config" />
     <None Include="modules\_protected\Shell\Shell.zip" />
     <None Include="packages.config" />
-    <None Include="Views\Shared\FormsContentArea.cshtml" />
+    <Content Include="Views\Shared\FormsContentArea.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Blocks\FormBlockControl.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="Views\Blocks\FormContainerBlockControl.ascx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

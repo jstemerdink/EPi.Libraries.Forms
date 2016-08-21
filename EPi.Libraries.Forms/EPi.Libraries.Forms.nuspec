@@ -7,7 +7,7 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <projectUrl>https://github.com/jstemerdink/EPi.Libraries.DeviceDetection/tree/master/EPi.Libraries.DeviceDetection/</projectUrl>
+    <projectUrl>https://github.com/jstemerdink/EPi.Libraries.Forms</projectUrl>
     <iconUrl>http://jstemerdink.net/images/js-nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
