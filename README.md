@@ -8,6 +8,8 @@ By Jeroen Stemerdink
 [![Platform](https://img.shields.io/badge/platform-.NET 4.5.2-blue.svg?style=flat)](https://msdn.microsoft.com/en-us/library/w0x726c2%28v=vs.110%29.aspx)
 [![Platform](https://img.shields.io/badge/EPiServer-%209.7.0-orange.svg?style=flat)](http://world.episerver.com/cms/)  
 [![Issue Count](https://codeclimate.com/github/jstemerdink/EPi.Libraries.Forms/badges/issue_count.svg)](https://codeclimate.com/github/jstemerdink/EPi.Libraries.Forms)
+[![Stories in Backlog](https://badge.waffle.io/jstemerdink/EPi.Libraries.Forms.svg?label=enhancement&title=Backlog)](http://waffle.io/jstemerdink/EPi.Libraries.Forms)
+[![Stories in Ready](https://badge.waffle.io/jstemerdink/EPi.Libraries.Forms.svg?label=ready&title=Ready)](http://waffle.io/jstemerdink/EPi.Libraries.Forms) 
 
 ## About
 Trick your EPiServer WebForms project into working with the new Forms Add-on
