@@ -1,4 +1,4 @@
-﻿// Copyright © 2016 Jeroen Stemerdink.
+﻿// Copyright © 2016 Jeroen Stemerdink / Tim Cromarty.
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -31,7 +31,8 @@ namespace EPi.Libraries.Forms
     /// <summary>
     /// Class MvcUtility.
     /// </summary>
-    /// <author>Jeroen Stemerdink</author>
+    /// <author>Jeroen Stemerdink, Tim Cromarty</author>
+	/// <remarks>See https://clicktricity.com/2010/06/22/using-mvc-renderaction-within-a-webform/ for the base.</remarks>
     public static class MvcUtility
     {
         /// <summary>
