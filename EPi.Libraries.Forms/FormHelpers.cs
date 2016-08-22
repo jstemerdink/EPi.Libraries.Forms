@@ -14,6 +14,7 @@
     using EPiServer.Framework.Configuration;
     using EPiServer.Framework.Localization;
     using EPiServer.Framework.Web.Resources;
+    using EPiServer.Logging;
     using EPiServer.ServiceLocation;
     using EPiServer.Web;
     using EPiServer.Web.Routing;
@@ -24,6 +25,11 @@
     /// <author>Jeroen Stemerdink</author>
     public static class FormHelpers
     {
+        /// <summary>
+        /// The log
+        /// </summary>
+        private static readonly ILogger Log = LogManager.GetLogger();
+
 #pragma warning disable 649
         /// <summary>
         /// The form configuration
@@ -56,6 +62,7 @@
         /// Serialize some localized text messages to clientside context
         /// </summary>
         /// <returns>System.String.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static string GetCommonMessages()
         {
             var data =
@@ -94,6 +101,10 @@
         /// </summary>
         /// <param name="scripts">The scripts.</param>
         /// <param name="css">The CSS.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#")]
         public static void GetFormExternalResources(out List<string> scripts, out List<string> css)
         {
             scripts = new List<string>();
@@ -124,78 +135,86 @@
         /// <param name="controllerContext">The controller context.</param>
         public static void SetResources(ControllerContext controllerContext)
         {
+            if (controllerContext == null)
+            {
+                Log.Debug("Could not set the rquired resources beacause the controller context does not exist.");
+                return;
+            }
+
             ContextMode contextMode = controllerContext.RequestContext.GetContextMode();
             bool flag1 = (contextMode == ContextMode.Default) || (contextMode == ContextMode.Preview);
 
-            if (flag1)
+            if (!flag1)
             {
-                if (formConfig.Service.InjectFormOwnStylesheet)
-                {
-                    string webResourceUrl = ModuleHelper.GetWebResourceUrl(
-                        typeof(FormContainerBlockController),
-                        "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms.css");
-                    requiredClientResourceList.Service.Require(
-                        new ClientResource
-                            {
-                                Name = "EPiServerForms.css",
-                                Dependencies = new List<string> { "EPiServerForms_prerequisite.js" },
-                                ResourceType = ClientResourceType.Html,
-                                InlineContent =
-                                    "<link rel='stylesheet' type='text/css' data-epiforms-resource='EPiServerForms.css' href='"
-                                    + webResourceUrl + "' />"
-                            }).AtHeader();
-                }
+                return;
+            }
 
-                if (!formConfig.Service.WorkInNonJSMode)
-                {
-                    string scriptContent1 =
-                        "var epi = epi||{}; epi.EPiServer = epi.EPiServer||{}; epi.EPiServer.Forms = epi.EPiServer.Forms||{};\nepi.EPiServer.Forms.InjectFormOwnJQuery = "
-                        + formConfig.Service.InjectFormOwnJQuery.ToString().ToLowerInvariant()
-                        + ";epi.EPiServer.Forms.OriginalJQuery = typeof jQuery !== 'undefined' ? jQuery : undefined;";
-                    requiredClientResourceList.Service.RequireScriptInline(
-                        scriptContent1,
-                        "EPiServerForms_saveOriginalJQuery.js",
-                        new List<string>()).AtHeader();
-                    if (formConfig.Service.InjectFormOwnJQuery)
-                    {
-                        requiredClientResourceList.Service.RequireScript(
-                            ModuleHelper.GetWebResourceUrl(
-                                typeof(FormContainerBlockController),
-                                "EPiServer.Forms.ClientResources.ViewMode.jquery-1.12.4.min.js"),
-                            "Forms.jquery.js",
-                            new List<string> { "EPiServerForms_saveOriginalJQuery.js" }).AtHeader();
-                    }
+            if (formConfig.Service.InjectFormOwnStylesheet)
+            {
+                string webResourceUrl = ModuleHelper.GetWebResourceUrl(
+                    typeof(FormContainerBlockController),
+                    "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms.css");
+                requiredClientResourceList.Service.Require(
+                    new ClientResource
+                        {
+                            Name = "EPiServerForms.css",
+                            Dependencies = new List<string> { "EPiServerForms_prerequisite.js" },
+                            ResourceType = ClientResourceType.Html,
+                            InlineContent =
+                                "<link rel='stylesheet' type='text/css' data-epiforms-resource='EPiServerForms.css' href='"
+                                + webResourceUrl + "' />"
+                        }).AtHeader();
+            }
 
-                    string webResourceContent = ModuleHelper.GetWebResourceContent(
-                        typeof(FormContainerBlockController),
-                        "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms_prerequisite.js");
-                    List<string> scripts;
-                    List<string> css;
-                    GetFormExternalResources(out scripts, out css);
-                    string scriptContent2 =
-                        webResourceContent.Replace(
-                            "___CurrentPageLink___",
-                            FormsExtensions.GetCurrentPageLink().ToString())
-                            .Replace("___CurrentPageLanguage___", FormsExtensions.GetCurrentPageLanguage())
-                            .Replace("___ExternalScriptSources___", scripts.ToJson())
-                            .Replace("___ExternalCssSources___", css.ToJson())
-                            .Replace(
-                                "___UploadExtensionBlackList___",
-                                formConfig.Service.DefaultUploadExtensionBlackList)
-                            .Replace("___Messages___", GetCommonMessages())
-                            .Replace("___LocalizedResources___", FormsExtensions.GetLocalizedResources().ToJson());
-                    requiredClientResourceList.Service.RequireScriptInline(
-                        scriptContent2,
-                        "EPiServerForms_prerequisite.js",
-                        new List<string> { "Forms.jquery.js" }).AtHeader();
-                    string resourceName = EPiServerFrameworkSection.Instance.ClientResources.Debug
-                                              ? "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms.js"
-                                              : "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms.min.js";
+            if (!formConfig.Service.WorkInNonJSMode)
+            {
+                string scriptContent1 =
+                    "var epi = epi||{}; epi.EPiServer = epi.EPiServer||{}; epi.EPiServer.Forms = epi.EPiServer.Forms||{};\nepi.EPiServer.Forms.InjectFormOwnJQuery = "
+                    + formConfig.Service.InjectFormOwnJQuery.ToString().ToLowerInvariant()
+                    + ";epi.EPiServer.Forms.OriginalJQuery = typeof jQuery !== 'undefined' ? jQuery : undefined;";
+                requiredClientResourceList.Service.RequireScriptInline(
+                    scriptContent1,
+                    "EPiServerForms_saveOriginalJQuery.js",
+                    new List<string>()).AtHeader();
+                if (formConfig.Service.InjectFormOwnJQuery)
+                {
                     requiredClientResourceList.Service.RequireScript(
-                        ModuleHelper.GetWebResourceUrl(typeof(FormContainerBlockController), resourceName),
-                        "EPiServerForms.js",
-                        new List<string> { "Forms.jquery.js", "EPiServerForms_prerequisite.js" }).AtFooter();
+                        ModuleHelper.GetWebResourceUrl(
+                            typeof(FormContainerBlockController),
+                            "EPiServer.Forms.ClientResources.ViewMode.jquery-1.12.4.min.js"),
+                        "Forms.jquery.js",
+                        new List<string> { "EPiServerForms_saveOriginalJQuery.js" }).AtHeader();
                 }
+
+                string webResourceContent = ModuleHelper.GetWebResourceContent(
+                    typeof(FormContainerBlockController),
+                    "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms_prerequisite.js");
+                List<string> scripts;
+                List<string> css;
+                GetFormExternalResources(out scripts, out css);
+                string scriptContent2 =
+                    webResourceContent.Replace(
+                        "___CurrentPageLink___",
+                        FormsExtensions.GetCurrentPageLink().ToString())
+                        .Replace("___CurrentPageLanguage___", FormsExtensions.GetCurrentPageLanguage())
+                        .Replace("___ExternalScriptSources___", scripts.ToJson())
+                        .Replace("___ExternalCssSources___", css.ToJson())
+                        .Replace(
+                            "___UploadExtensionBlackList___",
+                            formConfig.Service.DefaultUploadExtensionBlackList)
+                        .Replace("___Messages___", GetCommonMessages())
+                        .Replace("___LocalizedResources___", FormsExtensions.GetLocalizedResources().ToJson());
+                requiredClientResourceList.Service.RequireScriptInline(
+                    scriptContent2,
+                    "EPiServerForms_prerequisite.js",
+                    new List<string> { "Forms.jquery.js" }).AtHeader();
+                string resourceName = EPiServerFrameworkSection.Instance.ClientResources.Debug
+                                          ? "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms.js"
+                                          : "EPiServer.Forms.ClientResources.ViewMode.EPiServerForms.min.js";
+                requiredClientResourceList.Service.RequireScript(
+                    ModuleHelper.GetWebResourceUrl(typeof(FormContainerBlockController), resourceName),
+                    "EPiServerForms.js",
+                    new List<string> { "Forms.jquery.js", "EPiServerForms_prerequisite.js" }).AtFooter();
             }
         }
 

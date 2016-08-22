@@ -197,7 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormHelpers.cs" />
-    <Compile Include="GhostForm.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MvcUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Blocks\FormContainerBlockControl.ascx.cs">
@@ -217,6 +217,23 @@
     <None Include="modules\_protected\EPiServer.Forms\Forms.config" />
     <None Include="modules\_protected\Shell\Shell.zip" />
     <None Include="packages.config" />
+    <Content Include="Views\Shared\ElementBlocks\CaptchaElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\ChoiceElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\FileUploadElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\FormContainerBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\FormStepBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\ImageChoiceElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\NumberElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\ParagraphTextElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\PredefinedHiddenElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\RangeElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\ResetButtonElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\SelectionElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\SubmitButtonElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\TextareaElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\TextboxElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\UrlElementBlock.ascx" />
+    <Content Include="Views\Shared\ElementBlocks\VisitorDataHiddenElementBlock.ascx" />
     <Content Include="Views\Shared\FormsContentArea.cshtml" />
   </ItemGroup>
   <ItemGroup>

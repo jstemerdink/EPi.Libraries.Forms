@@ -20,10 +20,12 @@
 namespace EPi.Libraries.Forms.Views.Blocks
 {
     using System;
+    using System.Globalization;
     using System.Web.Mvc;
+    using System.Web.UI;
 
     using EPiServer.Core;
-    using EPiServer.Editor;
+    using EPiServer.Forms.Controllers;
     using EPiServer.Forms.Implementation.Elements;
     using EPiServer.Framework.DataAnnotations;
     using EPiServer.Framework.Web;
@@ -55,25 +57,15 @@ namespace EPi.Libraries.Forms.Views.Blocks
         /// <param name="e">The <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
-            this.FakeContext = MvcUtility.GetFormControllerContext();
+
+            using (FormContainerBlockController formContainerBlockController = new FormContainerBlockController())
+            {
+                this.FakeContext = MvcUtility.GetFormControllerContext(formContainerBlockController);
+            }
+
+            this.SetFormAttributes();
 
             FormHelpers.SetResources(this.FakeContext);
-
-            if (!PageEditing.PageIsInEditMode)
-            {
-                try
-                {
-                    GhostForm form = this.Page.Form as GhostForm;
-
-                    if (form != null)
-                    {
-                        form.RenderFormTag = false;
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                }
-            }
 
             ContentArea contentArea = new ContentArea();
             contentArea.Items.Add(new ContentAreaItem { ContentLink = this.CurrentBlock.Content.ContentLink });
@@ -81,6 +73,22 @@ namespace EPi.Libraries.Forms.Views.Blocks
             this.FakeArea = contentArea;
 
             base.OnLoad(e);
+        }
+
+        /// <summary>
+        /// Add the form attributes needed for the 'Forms form" to the WebForm.
+        /// </summary>
+        private void SetFormAttributes()
+        {
+            bool validationFail;
+            bool.TryParse(this.FakeContext.Controller.ViewBag.ValidationFail, out validationFail);
+            string validationFailCssClass = validationFail ? "ValidationFail" : string.Empty;
+
+            this.Page.Form.ID = this.CurrentBlock.Content.ContentGuid.ToString();
+            this.Page.Form.ClientIDMode = ClientIDMode.Static;
+            this.Page.Form.Attributes.Add("data-epiforms-type", "form");
+            this.Page.Form.Attributes.Add("enctype", "multipart/form-data");
+            this.Page.Form.Attributes.Add("class", string.Format(CultureInfo.InvariantCulture, "EPiServerForms {0}", validationFailCssClass));
         }
 
         /// <summary>

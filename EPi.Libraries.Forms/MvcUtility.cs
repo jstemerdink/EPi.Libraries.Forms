@@ -20,6 +20,7 @@
 namespace EPi.Libraries.Forms
 {
     using System;
+    using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
@@ -32,7 +33,7 @@ namespace EPi.Libraries.Forms
     /// Class MvcUtility.
     /// </summary>
     /// <author>Jeroen Stemerdink, Tim Cromarty</author>
-	/// <remarks>See https://clicktricity.com/2010/06/22/using-mvc-renderaction-within-a-webform/ for the base.</remarks>
+    /// <remarks>See https://clicktricity.com/2010/06/22/using-mvc-renderaction-within-a-webform/ for the base.</remarks>
     public static class MvcUtility
     {
         /// <summary>
@@ -48,17 +49,37 @@ namespace EPi.Libraries.Forms
         {
             try
             {
+                using (FormContainerBlockController formContainerBlockController = new FormContainerBlockController())
+                {
+                    return GetFormControllerContext(formContainerBlockController);
+                }
+            }
+            catch (ArgumentNullException argumentNullException)
+            {
+                Log.Critical(
+                    "Cannot create controllercontext for the FormContainerBlock: \r\n {0}",
+                    argumentNullException);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the form controller context.
+        /// </summary>
+        /// <returns>ControllerContext.</returns>
+        public static ControllerContext GetFormControllerContext(FormContainerBlockController formContainerBlockController)
+        {
+            try
+            {
                 HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
                 RouteData routeData = new RouteData();
                 routeData.Values.Add("controller", "FormContainerBlock");
                 routeData.Values.Add("action", "Index");
 
-                using (FormContainerBlockController formContainerBlockController = new FormContainerBlockController())
-                {
-                    return new ControllerContext(
+                return new ControllerContext(
                     new RequestContext(httpContextBase, routeData),
                     formContainerBlockController);
-                }
             }
             catch (ArgumentNullException argumentNullException)
             {
@@ -78,7 +99,7 @@ namespace EPi.Libraries.Forms
         /// <param name="controllerContext">The controller context.</param>
         public static void RenderPartial(string partialViewName, object model, ControllerContext controllerContext)
         {
-            if (model == null)
+            if ((controllerContext == null) ||(model == null) || string.IsNullOrWhiteSpace(partialViewName))
             {
                 return;
             }
@@ -141,7 +162,7 @@ namespace EPi.Libraries.Forms
             }
 
             throw new InvalidOperationException(
-                string.Format("Partial view {0} not found. Locations Searched: {1}", partialViewName, locationsText));
+                string.Format(CultureInfo.InvariantCulture, "Partial view {0} not found. Locations Searched: {1}", partialViewName, locationsText));
         }
     }
 }
