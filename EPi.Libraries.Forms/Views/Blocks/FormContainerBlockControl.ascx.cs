@@ -20,11 +20,11 @@
 namespace EPi.Libraries.Forms.Views.Blocks
 {
     using System;
+    using System.Globalization;
     using System.Web.Mvc;
     using System.Web.UI;
 
     using EPiServer.Core;
-    using EPiServer.Editor;
     using EPiServer.Forms.Controllers;
     using EPiServer.Forms.Implementation.Elements;
     using EPiServer.Framework.DataAnnotations;
@@ -63,25 +63,9 @@ namespace EPi.Libraries.Forms.Views.Blocks
                 this.FakeContext = MvcUtility.GetFormControllerContext(formContainerBlockController);
             }
 
+            this.SetFormAttributes();
+
             FormHelpers.SetResources(this.FakeContext);
-
-            //this.SetFormAttributes();
-
-            if (!PageEditing.PageIsInEditMode)
-            {
-                try
-                {
-                    GhostForm form = this.Page.Form as GhostForm;
-
-                    if (form != null)
-                    {
-                        form.RenderFormTag = false;
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                }
-            }
 
             ContentArea contentArea = new ContentArea();
             contentArea.Items.Add(new ContentAreaItem { ContentLink = this.CurrentBlock.Content.ContentLink });
@@ -96,12 +80,16 @@ namespace EPi.Libraries.Forms.Views.Blocks
         /// </summary>
         private void SetFormAttributes()
         {
-            this.Page.Form.ID = this.CurrentBlock.Form.FormGuid.ToString();
+            bool validationFail;
+            bool.TryParse(this.FakeContext.Controller.ViewBag.ValidationFail, out validationFail);
+            string validationFailCssClass = validationFail ? "ValidationFail" : string.Empty;
+
+            this.Page.Form.ID = this.CurrentBlock.Content.ContentGuid.ToString();
             this.Page.Form.ClientIDMode = ClientIDMode.Static;
             this.Page.Form.Action = "post";
             this.Page.Form.Attributes.Add("data-epiforms-type", "form");
             this.Page.Form.Attributes.Add("enctype", "multipart/form-data");
-            this.Page.Form.Attributes.Add("class", "EPiServerForms ");
+            this.Page.Form.Attributes.Add("class", string.Format(CultureInfo.InvariantCulture, "EPiServerForms {0}", validationFailCssClass));
         }
 
         /// <summary>
