@@ -86,7 +86,6 @@ namespace EPi.Libraries.Forms.Views.Blocks
 
             this.Page.Form.ID = this.CurrentBlock.Content.ContentGuid.ToString();
             this.Page.Form.ClientIDMode = ClientIDMode.Static;
-            this.Page.Form.Action = "post";
             this.Page.Form.Attributes.Add("data-epiforms-type", "form");
             this.Page.Form.Attributes.Add("enctype", "multipart/form-data");
             this.Page.Form.Attributes.Add("class", string.Format(CultureInfo.InvariantCulture, "EPiServerForms {0}", validationFailCssClass));
