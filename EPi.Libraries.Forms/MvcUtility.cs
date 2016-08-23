@@ -28,6 +28,7 @@ namespace EPi.Libraries.Forms
 
     using EPiServer.Forms.Controllers;
     using EPiServer.Logging;
+    using EPiServer.Web.Routing;
 
     /// <summary>
     ///     Class MvcUtility.
@@ -52,18 +53,24 @@ namespace EPi.Libraries.Forms
                 IControllerFactory factory = DependencyResolver.Current.GetService<IControllerFactory>()
                                              ?? new DefaultControllerFactory();
 
-                HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
+                RequestContext requestContext = HttpContext.Current.GetRequestContext();
 
-                RouteData routeData = new RouteData();
-                routeData.Values.Add("controller", "FormContainerBlock");
-                routeData.Values.Add("action", "Index");
+                RouteData routeData = requestContext.RouteData ?? new RouteData();
 
-                RequestContext requestContext = new RequestContext(httpContextBase, routeData);
+                if (!routeData.Values.ContainsKey("controller"))
+                {
+                    routeData.Values.Add("controller", "FormContainerBlock");
+                }
+
+                if (!routeData.Values.ContainsKey("action"))
+                {
+                    routeData.Values.Add("action", "Index");
+                }
 
                 FormContainerBlockController controller =
                     factory.CreateController(requestContext, "FormContainerBlock") as FormContainerBlockController;
 
-                ControllerContext newContext = new ControllerContext(httpContextBase, routeData, controller);
+                ControllerContext newContext = new ControllerContext(requestContext.HttpContext, routeData, controller);
                 if (controller != null)
                 {
                     controller.ControllerContext = newContext;
