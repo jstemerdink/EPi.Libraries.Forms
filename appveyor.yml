@@ -1,11 +1,16 @@
 version: 1.0.{build}
 #image: Visual Studio 2013
 configuration: Release
+branches:
+  only:
+    - master
+    - develop
 environment:
   github_token: 'secure: TaDEavUfTj6EgwcO7y5njQVS5Z9bBU/fVFuSApo5XEO6FSBT5UzJQmyJjbhIFDZb'
   myget_token: 'secure: 9Z+KYPk2hI7hg9kYLv/N13fvoqcYCP96isNUkRrKu0v87cw85H62oe/DCwpqvBXF'
 install:
 - choco install gitversion.portable -pre -y
+- choco install gitreleasenotes.portable -y
 - cmd: nuget sources add -Name EPiServerFeed -Source http://nuget.episerver.com/feed/packages.svc/
 before_build:
 - cmd: nuget restore
@@ -18,6 +23,7 @@ after_build:
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.nupkg"
 - 7z a EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip EPi.Libraries.Forms\bin\EPi.Libraries.Forms.dll EPi.Libraries.Forms\Views\Blocks\FormContainerBlockControl.ascx EPi.Libraries.Forms\Views\Shared\FormsContentArea.cshtml EPi.Libraries.Forms\Views\Shared\ElementBlocks\*.ascx
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip"
+- ps: gitreleasenotes /o artifacts/releasenotes.md
 before_package:
 - ps: >-
     Write-Host -NoNewline "Installing NuGet 3.3.0..."
