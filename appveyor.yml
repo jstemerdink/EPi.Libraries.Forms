@@ -23,7 +23,7 @@ after_build:
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.nupkg"
 - 7z a EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip EPi.Libraries.Forms\bin\EPi.Libraries.Forms.dll EPi.Libraries.Forms\Views\Blocks\FormContainerBlockControl.ascx EPi.Libraries.Forms\Views\Shared\FormsContentArea.cshtml EPi.Libraries.Forms\Views\Shared\ElementBlocks\*.ascx
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip"
-- ps: gitreleasenotes /o artifacts/releasenotes.md
+- ps: gitreleasenotes . /OutputFile artifacts/releasenotes.md
 before_package:
 - ps: >-
     Write-Host -NoNewline "Installing NuGet 3.3.0..."
