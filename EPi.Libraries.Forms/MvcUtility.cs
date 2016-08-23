@@ -20,6 +20,7 @@
 namespace EPi.Libraries.Forms
 {
     using System;
+    using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
@@ -27,37 +28,53 @@ namespace EPi.Libraries.Forms
 
     using EPiServer.Forms.Controllers;
     using EPiServer.Logging;
+    using EPiServer.Web.Routing;
 
     /// <summary>
-    /// Class MvcUtility.
+    ///     Class MvcUtility.
     /// </summary>
     /// <author>Jeroen Stemerdink, Tim Cromarty</author>
-	/// <remarks>See https://clicktricity.com/2010/06/22/using-mvc-renderaction-within-a-webform/ for the base.</remarks>
+    /// <remarks>See https://clicktricity.com/2010/06/22/using-mvc-renderaction-within-a-webform/ for the base.</remarks>
     public static class MvcUtility
     {
         /// <summary>
-        /// The log
+        ///     The log
         /// </summary>
         private static readonly ILogger Log = LogManager.GetLogger();
 
         /// <summary>
-        /// Gets the form controller context.
+        ///     Gets the form container block controller.
         /// </summary>
-        /// <returns>ControllerContext.</returns>
-        public static ControllerContext GetFormControllerContext()
+        /// <returns>FormContainerBlockController.</returns>
+        public static FormContainerBlockController GetFormContainerBlockController()
         {
             try
             {
-                HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
-                RouteData routeData = new RouteData();
-                routeData.Values.Add("controller", "FormContainerBlock");
-                routeData.Values.Add("action", "Index");
+                IControllerFactory factory = DependencyResolver.Current.GetService<IControllerFactory>()
+                                             ?? new DefaultControllerFactory();
 
-                using (FormContainerBlockController formContainerBlockController = new FormContainerBlockController())
+                RequestContext requestContext = HttpContext.Current.GetRequestContext();
+
+                RouteData routeData = requestContext.RouteData ?? new RouteData();
+
+                if (!routeData.Values.ContainsKey("controller"))
                 {
-                    return new ControllerContext(
-                    new RequestContext(httpContextBase, routeData),
-                    formContainerBlockController);
+                    routeData.Values.Add("controller", "FormContainerBlock");
+                }
+
+                if (!routeData.Values.ContainsKey("action"))
+                {
+                    routeData.Values.Add("action", "Index");
+                }
+
+                FormContainerBlockController controller =
+                    factory.CreateController(requestContext, "FormContainerBlock") as FormContainerBlockController;
+
+                ControllerContext newContext = new ControllerContext(requestContext.HttpContext, routeData, controller);
+                if (controller != null)
+                {
+                    controller.ControllerContext = newContext;
+                    return controller;
                 }
             }
             catch (ArgumentNullException argumentNullException)
@@ -71,14 +88,14 @@ namespace EPi.Libraries.Forms
         }
 
         /// <summary>
-        /// Renders the partial.
+        ///     Renders the partial.
         /// </summary>
         /// <param name="partialViewName">Partial name of the view.</param>
         /// <param name="model">The model.</param>
         /// <param name="controllerContext">The controller context.</param>
         public static void RenderPartial(string partialViewName, object model, ControllerContext controllerContext)
         {
-            if (model == null)
+            if ((controllerContext == null) || (model == null) || string.IsNullOrWhiteSpace(partialViewName))
             {
                 return;
             }
@@ -116,7 +133,7 @@ namespace EPi.Libraries.Forms
 
         // Find the view, if not throw an exception
         /// <summary>
-        /// Finds the partial view.
+        ///     Finds the partial view.
         /// </summary>
         /// <param name="controllerContext">The controller context.</param>
         /// <param name="partialViewName">Partial name of the view.</param>
@@ -141,7 +158,11 @@ namespace EPi.Libraries.Forms
             }
 
             throw new InvalidOperationException(
-                string.Format("Partial view {0} not found. Locations Searched: {1}", partialViewName, locationsText));
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Partial view {0} not found. Locations Searched: {1}",
+                    partialViewName,
+                    locationsText));
         }
     }
 }
