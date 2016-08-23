@@ -196,7 +196,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormHelpers.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MvcUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -29,10 +29,11 @@ namespace EPi.Libraries.Forms.Views.Blocks
     using EPiServer.Forms.Implementation.Elements;
     using EPiServer.Framework.DataAnnotations;
     using EPiServer.Framework.Web;
+    using EPiServer.Logging;
     using EPiServer.Web;
 
     /// <summary>
-    /// Class FormContainerBlockControl.
+    ///     Class FormContainerBlockControl.
     /// </summary>
     /// <seealso cref="EPiServer.Web.BlockControlBase{FormContainerBlock}" />
     /// <author>Jeroen Stemerdink</author>
@@ -40,33 +41,50 @@ namespace EPi.Libraries.Forms.Views.Blocks
     public partial class FormContainerBlockControl : BlockControlBase<FormContainerBlock>
     {
         /// <summary>
-        /// Gets the fake area.
+        ///     The log
+        /// </summary>
+        private static readonly ILogger Log = LogManager.GetLogger();
+
+        /// <summary>
+        ///     Gets the fake area.
         /// </summary>
         /// <value>The fake area.</value>
         protected ContentArea FakeArea { get; private set; }
 
         /// <summary>
-        /// Gets the fake context.
+        ///     Gets the fake context.
         /// </summary>
         /// <value>The fake context.</value>
         protected ControllerContext FakeContext { get; private set; }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Web.UI.Control.Load" /> event.
+        ///     Raises the <see cref="E:System.Web.UI.Control.Load" /> event.
         /// </summary>
         /// <param name="e">The <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
+            FormContainerBlockController formContainerBlockController = MvcUtility.GetFormContainerBlockController();
 
-            FormContainerBlockController formContainerBlockController = DependencyResolver.Current.GetService<FormContainerBlockController>();
-            this.FakeContext = MvcUtility.GetFormControllerContext(formContainerBlockController);
+            if (formContainerBlockController == null)
+            {
+                return;
+            }
+
+            formContainerBlockController.Index(this.CurrentBlock);
+
+            this.FakeContext = formContainerBlockController.ControllerContext;
 
             this.SetFormAttributes();
 
-            FormHelpers.SetResources(this.FakeContext);
-
             ContentArea contentArea = new ContentArea();
-            contentArea.Items.Add(new ContentAreaItem { ContentLink = this.CurrentBlock.Content.ContentLink });
+            try
+            {
+                contentArea.Items.Add(new ContentAreaItem { ContentLink = this.CurrentBlock.Content.ContentLink });
+            }
+            catch (NotSupportedException notSupportedException)
+            {
+                Log.Critical("Cannot add form to the content area: \r\n {0}", notSupportedException);
+            }
 
             this.FakeArea = contentArea;
 
@@ -74,30 +92,21 @@ namespace EPi.Libraries.Forms.Views.Blocks
         }
 
         /// <summary>
-        /// Add the form attributes needed for the 'Forms form" to the WebForm.
+        ///     Add the form attributes needed for the 'Forms form" to the WebForm.
         /// </summary>
         private void SetFormAttributes()
         {
-            bool validationFail;
-            bool.TryParse(this.FakeContext.Controller.ViewBag.ValidationFail, out validationFail);
-            string validationFailCssClass = validationFail ? "ValidationFail" : string.Empty;
+            string validationFailCssClass = this.FakeContext.Controller.ViewBag.ValidationFail
+                                                ? "ValidationFail"
+                                                : string.Empty;
 
             this.Page.Form.ID = this.CurrentBlock.Content.ContentGuid.ToString();
             this.Page.Form.ClientIDMode = ClientIDMode.Static;
             this.Page.Form.Attributes.Add("data-epiforms-type", "form");
             this.Page.Form.Attributes.Add("enctype", "multipart/form-data");
-            this.Page.Form.Attributes.Add("class", string.Format(CultureInfo.InvariantCulture, "EPiServerForms {0}", validationFailCssClass));
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Web.UI.Control.PreRender" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
-        protected override void OnPreRender(EventArgs e)
-        {
-            FormHelpers.SetVisitorIdentifierIfNeeded(this.FakeContext.HttpContext);
-
-            base.OnPreRender(e);
+            this.Page.Form.Attributes.Add(
+                "class",
+                string.Format(CultureInfo.InvariantCulture, "EPiServerForms {0}", validationFailCssClass));
         }
     }
 }
