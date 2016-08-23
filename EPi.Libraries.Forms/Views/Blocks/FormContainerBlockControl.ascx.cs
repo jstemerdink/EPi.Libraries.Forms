@@ -96,9 +96,13 @@ namespace EPi.Libraries.Forms.Views.Blocks
         /// </summary>
         private void SetFormAttributes()
         {
-            string validationFailCssClass = this.FakeContext.Controller.ViewBag.ValidationFail
-                                                ? "ValidationFail"
-                                                : string.Empty;
+            string validationFailCssClass = string.Empty;
+
+            if ((this.FakeContext.Controller.ViewBag != null)
+                && (this.FakeContext.Controller.ViewBag.ValidationFail != null))
+            {
+                validationFailCssClass = this.FakeContext.Controller.ViewBag.ValidationFail ? "ValidationFail" : string.Empty;
+            }
 
             this.Page.Form.ID = this.CurrentBlock.Content.ContentGuid.ToString();
             this.Page.Form.ClientIDMode = ClientIDMode.Static;
