@@ -49,10 +49,8 @@ namespace EPi.Libraries.Forms
         {
             try
             {
-                using (FormContainerBlockController formContainerBlockController = new FormContainerBlockController())
-                {
-                    return GetFormControllerContext(formContainerBlockController);
-                }
+                FormContainerBlockController formContainerBlockController = DependencyResolver.Current.GetService<FormContainerBlockController>();
+                return GetFormControllerContext(formContainerBlockController);
             }
             catch (ArgumentNullException argumentNullException)
             {

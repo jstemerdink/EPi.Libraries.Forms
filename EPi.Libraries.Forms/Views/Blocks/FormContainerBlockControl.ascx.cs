@@ -58,10 +58,8 @@ namespace EPi.Libraries.Forms.Views.Blocks
         protected override void OnLoad(EventArgs e)
         {
 
-            using (FormContainerBlockController formContainerBlockController = new FormContainerBlockController())
-            {
-                this.FakeContext = MvcUtility.GetFormControllerContext(formContainerBlockController);
-            }
+            FormContainerBlockController formContainerBlockController = DependencyResolver.Current.GetService<FormContainerBlockController>();
+            this.FakeContext = MvcUtility.GetFormControllerContext(formContainerBlockController);
 
             this.SetFormAttributes();
 
@@ -98,6 +96,7 @@ namespace EPi.Libraries.Forms.Views.Blocks
         protected override void OnPreRender(EventArgs e)
         {
             FormHelpers.SetVisitorIdentifierIfNeeded(this.FakeContext.HttpContext);
+
             base.OnPreRender(e);
         }
     }
