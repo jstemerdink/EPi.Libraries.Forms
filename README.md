@@ -9,12 +9,19 @@ By Jeroen Stemerdink
 [![Platform](https://img.shields.io/badge/EPiServer-%209.7.0-orange.svg?style=flat)](http://world.episerver.com/cms/)  
 [![Issue Count](https://codeclimate.com/github/jstemerdink/EPi.Libraries.Forms/badges/issue_count.svg)](https://codeclimate.com/github/jstemerdink/EPi.Libraries.Forms)
 [![Stories in Backlog](https://badge.waffle.io/jstemerdink/EPi.Libraries.Forms.svg?label=enhancement&title=Backlog)](http://waffle.io/jstemerdink/EPi.Libraries.Forms)
-[![Stories in Ready](https://badge.waffle.io/jstemerdink/EPi.Libraries.Forms.svg?label=ready&title=Ready)](http://waffle.io/jstemerdink/EPi.Libraries.Forms) 
+[![GitHub release](https://img.shields.io/github/release/jstemerdink/EPi.Libraries.Forms.svg?maxAge=2592000)](https://github.com/jstemerdink/EPi.Libraries.Forms/releases)
+[![Github All Releases](https://img.shields.io/github/downloads/jstemerdink/EPi.Libraries.Forms/total.svg?maxAge=2592000)](https://github.com/jstemerdink/EPi.Libraries.Forms/releases)
 
 ## About
 Trick your EPiServer WebForms project into working with the new Forms Add-on
 
-See my [blog post](https://jstemerdink.wordpress.com/2016/08/18/forms-and-webforms-pt2/) for more information.
+See my [blog post](https://jstemerdink.wordpress.com/2016/08/18/forms-and-webforms-pt3/) for more information.
+
+*NOTE: You will have to set the 'renderingFormUsingDivElement' settting to true in the Forms.config, located in modules\_protected\EPiServer.Forms**  
+
+*NOTE: If you used the previuos version, and have not made any changes in the ElementBlocks yourself other then me rendering a div tag instead of the form tag, you can remove them.*    
+
+
 
 
 > *Powered by ReSharper*

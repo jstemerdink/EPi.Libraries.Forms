@@ -90,16 +90,16 @@
       <HintPath>..\packages\EPiServer.Framework.9.7.0\lib\net45\EPiServer.Events.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EPiServer.Forms, Version=3.0.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPiServer.Forms.3.0.0.0\lib\EPiServer.Forms.dll</HintPath>
+    <Reference Include="EPiServer.Forms, Version=3.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPiServer.Forms.3.1.0\lib\EPiServer.Forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EPiServer.Forms.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPiServer.Forms.Core.3.0.0.0\lib\EPiServer.Forms.Core.dll</HintPath>
+    <Reference Include="EPiServer.Forms.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPiServer.Forms.Core.3.1.0\lib\EPiServer.Forms.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EPiServer.Forms.UI, Version=3.0.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPiServer.Forms.Core.3.0.0.0\lib\EPiServer.Forms.UI.dll</HintPath>
+    <Reference Include="EPiServer.Forms.UI, Version=3.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPiServer.Forms.Core.3.1.0\lib\EPiServer.Forms.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EPiServer.Framework, Version=9.7.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
@@ -216,23 +216,6 @@
     <None Include="modules\_protected\EPiServer.Forms\Forms.config" />
     <None Include="modules\_protected\Shell\Shell.zip" />
     <None Include="packages.config" />
-    <Content Include="Views\Shared\ElementBlocks\CaptchaElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\ChoiceElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\FileUploadElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\FormContainerBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\FormStepBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\ImageChoiceElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\NumberElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\ParagraphTextElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\PredefinedHiddenElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\RangeElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\ResetButtonElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\SelectionElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\SubmitButtonElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\TextareaElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\TextboxElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\UrlElementBlock.ascx" />
-    <Content Include="Views\Shared\ElementBlocks\VisitorDataHiddenElementBlock.ascx" />
     <Content Include="Views\Shared\FormsContentArea.cshtml" />
   </ItemGroup>
   <ItemGroup>

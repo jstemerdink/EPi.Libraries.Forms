@@ -1,6 +1,10 @@
 version: 1.0.{build}
 #image: Visual Studio 2013
 configuration: Release
+branches:
+  only:
+    - master
+    - develop
 environment:
   github_token: 'secure: TaDEavUfTj6EgwcO7y5njQVS5Z9bBU/fVFuSApo5XEO6FSBT5UzJQmyJjbhIFDZb'
   myget_token: 'secure: 9Z+KYPk2hI7hg9kYLv/N13fvoqcYCP96isNUkRrKu0v87cw85H62oe/DCwpqvBXF'
@@ -16,7 +20,7 @@ build:
 after_build:
 - cmd: nuget pack EPi.Libraries.Forms\EPi.Libraries.Forms.csproj -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.nupkg"
-- 7z a EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip EPi.Libraries.Forms\bin\EPi.Libraries.Forms.dll EPi.Libraries.Forms\Views\Blocks\FormContainerBlockControl.ascx EPi.Libraries.Forms\Views\Shared\FormsContentArea.cshtml EPi.Libraries.Forms\Views\Shared\ElementBlocks\*.ascx
+- 7z a EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip EPi.Libraries.Forms\bin\EPi.Libraries.Forms.dll EPi.Libraries.Forms\Views\Blocks\FormContainerBlockControl.ascx EPi.Libraries.Forms\Views\Shared\FormsContentArea.cshtml
 - cmd: appveyor PushArtifact "EPi.Libraries.Forms.%GitVersion_NuGetVersion%.zip"
 before_package:
 - ps: >-
