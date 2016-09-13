@@ -17,6 +17,12 @@ Trick your EPiServer WebForms project into working with the new Forms Add-on
 
 See my [blog post](https://jstemerdink.wordpress.com/2016/08/18/forms-and-webforms-pt3/) for more information.
 
+*NOTE: You will have to set the 'renderingFormUsingDivElement' settting to true in the Forms.config, located in modules\_protected\EPiServer.Forms**  
+
+*NOTE: If you used the previuos version, and have not made any changes in the ElementBlocks yourself other then me rendering a div tag instead of the form tag, you can remove them.*    
+
+
+
 
 > *Powered by ReSharper*
 
