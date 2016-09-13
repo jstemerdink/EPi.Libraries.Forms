@@ -11,11 +11,11 @@
     <iconUrl>http://jstemerdink.net/images/js-nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>Formtag can now be rendered as div through a setting, so removed the ElementBlocks folder</releaseNotes>
     <copyright>Copyright © Jeroen Stemerdink 2016</copyright>
     <tags>forms webforms</tags>
     <dependencies>
-      <dependency id="EPiServer.Forms" version="[3.0.0.0, 4.0)" />
+      <dependency id="EPiServer.Forms" version="[3.1.0.0, 4.0)" />
     </dependencies>
   </metadata>
   <files>
